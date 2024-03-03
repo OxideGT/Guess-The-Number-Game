@@ -1,0 +1,103 @@
+import tkinter as tk
+import random
+from itertools import cycle
+
+class GuessTheNumberGame:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Guess The Number Game V.4.4")
+        self.master.geometry("600x410")
+        self.master.configure(bg="black")
+
+        self.rainbow_colors = cycle(['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'])
+
+        self.title_label = tk.Label(self.master, text="Update Guess The Number Game V.4.4", font=("Arial", 16, "bold"), bg="black", fg=self.get_rainbow_color())
+        self.title_label.pack(pady=10)
+
+        self.difficulty_label = tk.Label(self.master, text="Select Difficulty:", font=("Arial", 12), bg="black", fg="white")
+        self.difficulty_label.pack(pady=5)
+
+        # Difficulty buttons
+        self.easy_button = tk.Button(self.master, text="Easy Level (1-50)", command=lambda: self.start_game(1, 50), font=("Arial", 12))
+        self.easy_button.pack(pady=5)
+
+        self.medium_button = tk.Button(self.master, text="Medium Level (1-100)", command=lambda: self.start_game(1, 100), font=("Arial", 12))
+        self.medium_button.pack(pady=5)
+
+        self.hard_button = tk.Button(self.master, text="Hard Level (1-200)", command=lambda: self.start_game(1, 200), font=("Arial", 12))
+        self.hard_button.pack(pady=5)
+
+        self.result_label = tk.Label(self.master, text="", font=("Arial", 12), bg="black", fg="white")
+        self.result_label.pack(pady=10)
+
+        self.made_by_label = tk.Label(self.master, text="Made by Oxide", font=("Arial", 10), bg="black", fg=self.get_rainbow_color())
+        self.made_by_label.pack(pady=10)
+
+        # Quit button on the bottom left
+        self.quit_button = tk.Button(self.master, text="Quit", command=self.master.destroy, font=("Arial", 12))
+        self.quit_button.pack(side=tk.BOTTOM, padx=10, pady=10)
+
+        # Version label on the bottom right
+        self.version_label = tk.Label(self.master, text="V.4.4", font=("Arial", 30), bg="black", fg="white")
+        self.version_label.pack(side=tk.BOTTOM, padx=10, pady=10)
+
+    def get_rainbow_color(self):
+        return next(self.rainbow_colors)
+
+    def start_game(self, lower, upper):
+        self.master.withdraw()  # Hide the difficulty selection window
+
+        game_window = tk.Tk()
+        game_window.title("Guess The Number Game")
+        game_window.geometry("500x430")
+        game_window.configure(bg="black")
+
+        secret_number = random.randint(lower, upper)
+
+        guess_label = tk.Label(game_window, text="Enter your guess:", font=("Arial", 12), bg="black", fg=self.get_rainbow_color())
+        guess_label.pack(pady=10)
+
+        guess_entry = tk.Entry(game_window, font=("Arial", 12))
+        guess_entry.pack(pady=10)
+
+        result_label = tk.Label(game_window, text="", font=("Arial", 12), bg="black", fg="white")
+        result_label.pack(pady=10)
+
+        submit_button = tk.Button(game_window, text="Submit Guess", command=lambda: self.check_guess(secret_number, guess_entry, result_label, lower, upper), font=("Arial", 12))
+        submit_button.pack(pady=10)
+
+        made_by_label = tk.Label(game_window, text="Made by oxide", font=("Arial", 10), bg="black", fg=self.get_rainbow_color())
+        made_by_label.pack(pady=10)
+
+        # Quit button on the bottom left
+        quit_button = tk.Button(game_window, text="Quit", command=game_window.destroy, font=("Arial", 12))
+        quit_button.pack(side=tk.BOTTOM, padx=10, pady=10)
+
+        # Version label on the bottom right
+        version_label = tk.Label(game_window, text="V.4.4", font=("Arial", 30), bg="black", fg="white")
+        version_label.pack(side=tk.BOTTOM, padx=10, pady=10)
+
+    def check_guess(self, secret_number, guess_entry, result_label, lower, upper):
+        user_guess = guess_entry.get()
+
+        try:
+            user_guess = int(user_guess)
+
+            if lower <= user_guess <= upper:
+                if user_guess == secret_number:
+                    result_text = "Congratulations! You guessed the correct number."
+                elif user_guess < secret_number:
+                    result_text = "Too low! Try again."
+                else:
+                    result_text = "Too high! Try again."
+            else:
+                result_text = f"Please enter a number between {lower} and {upper}."
+
+            result_label.config(text=result_text, fg="white")
+        except ValueError:
+            result_label.config(text="Invalid input. Please enter a valid number.", fg="red")
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    game = GuessTheNumberGame(root)
+    root.mainloop()
