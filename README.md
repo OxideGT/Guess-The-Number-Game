@@ -1,4 +1,5 @@
 ![image](https://github.com/OxideGT/Guess-The-Number-Game/assets/162006476/ea3fa816-8050-41e5-a4f4-b3554b576b25)
+
 1# To play the Guess the Number Game, start by selecting your preferred difficulty level: easy, medium, or hard, each with its own range of possible numbers.
 
 2# Once you've chosen a difficulty, a window will prompt you to guess a number within the specified range.
